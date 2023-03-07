@@ -52,7 +52,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : ???
+    model : sklearn model
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -63,3 +63,37 @@ def inference(model, X):
     """
     preds = model.predict(X)
     return preds
+
+
+def slicing_metrics(model, X, y, feature):
+    """
+    Compute metrics for a specific feature.
+    Parameters
+    ----------
+    model: sklearn model
+        Trained machine learning model.
+    X: np.array
+        Data used for prediction.
+    y: np.array
+        Known labels, binarized.
+    feature: str
+        Feature to slice on.
+
+    Returns
+    -------
+    res: dict, {category: {precision: float, recall: float, fbeta: float}}
+    """
+    preds = model.predict(X)
+    X_featured = X[feature]
+
+    res = {}
+
+    # Slice the data.
+    for cat in X_featured.unique():
+        X_slice = X[X[feature] == cat]
+        y_slice = y[X[feature] == cat]
+        preds_slice = preds[X[feature] == cat]
+        precision, recall, fbeta = compute_model_metrics(y_slice, preds_slice)
+        res[cat] = {"precision": precision, "recall": recall, "fbeta": fbeta}
+
+    return res
