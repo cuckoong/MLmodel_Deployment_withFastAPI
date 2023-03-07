@@ -1,0 +1,18 @@
+name: Pull data from DVC remote
+on:
+  push:
+jobs:
+  pull-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install DVC
+        run: |
+          sudo apt-get update
+          sudo apt-get install dvc
+      - name: Configure DVC
+        run: |
+          dvc remote add myremote s3://udacity-api-mlops-bucket
+      - name: Pull data from DVC remote
+        run: dvc pull
