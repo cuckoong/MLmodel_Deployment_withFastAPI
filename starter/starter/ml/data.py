@@ -43,6 +43,19 @@ def process_data(
         Trained LabelBinarizer if training is True, otherwise returns the binarizer
         passed in.
     """
+    if len(categorical_features) == 0:
+        categorical_features = [
+            "workclass",
+            "education",
+            "marital_status",
+            "occupation",
+            "relationship",
+            "race",
+            "sex",
+            "native_country",
+        ]
+
+    X.columns = X.columns.str.replace("-", "_")
 
     if label is not None:
         y = X[label]
