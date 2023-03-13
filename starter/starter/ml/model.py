@@ -1,5 +1,8 @@
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_selection import VarianceThreshold
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 # Optional: implement hyperparameter tuning.
@@ -18,11 +21,15 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    random_forest = RandomForestClassifier(
-        n_estimators=100, max_depth=5, random_state=0
-    )
-    random_forest.fit(X_train, y_train)
-    return random_forest
+    steps = [
+        ('VarianceThreshold', VarianceThreshold(threshold=0.0)),
+        ("scaler", StandardScaler()),
+        ("model", RandomForestClassifier(n_estimators=100, random_state=42)),
+    ]
+
+    pip = Pipeline(steps=steps)
+    pip.fit(X_train, y_train)
+    return pip
 
 
 def compute_model_metrics(y, preds):
@@ -47,7 +54,7 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
-def inference(model, X):
+def inference(model, X, lb=None):
     """ Run model inferences and return the predictions.
 
     Inputs
@@ -56,13 +63,18 @@ def inference(model, X):
         Trained machine learning model.
     X : np.array
         Data used for prediction.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained sklearn LabelBinarizer used for label inverse transform.
     Returns
     -------
     preds : np.array
         Predictions from the model.
+    labels : np.array
+        Inverse transformed labels from predictions.
     """
     preds = model.predict(X)
-    return preds
+    labels = lb.inverse_transform(preds)
+    return preds, labels
 
 
 def slicing_metrics(model, X, y, feature):
