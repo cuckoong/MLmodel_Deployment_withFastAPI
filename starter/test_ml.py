@@ -14,21 +14,6 @@ def data():
 
 
 @pytest.fixture
-def categorical_features():
-    cat_fea = [
-        "workclass",
-        "education",
-        "marital-status",
-        "occupation",
-        "relationship",
-        "race",
-        "sex",
-        "native-country",
-    ]
-    return cat_fea
-
-
-@pytest.fixture
 def label():
     return "salary"
 
@@ -51,24 +36,22 @@ def encoder():
     return encoder
 
 
-def test_process_data(data, categorical_features, label):
-    X_train, y_train, encoder, lb = process_data(data, categorical_features, label, training=True)
+def test_process_data(data, label):
+    X_train, y_train, encoder, lb = process_data(data, label=label, training=True)
     assert X_train.shape == (len(data), 108)
     assert y_train.shape == (len(data),)
     assert encoder is not None
     assert lb is not None
 
 
-def test_train_model(data, categorical_features, label):
-    X_train, y_train, encoder, lb = process_data(data, categorical_features, label, training=True)
+def test_train_model(data, label):
+    X_train, y_train, encoder, lb = process_data(data, label=label, training=True)
     model = train_model(X_train, y_train)
     assert model is not None
 
 
-def test_model_inference_metrics(model, data, categorical_features, encoder, lb, label):
-    x, y, _, _ = process_data(
-        data, categorical_features=categorical_features, label=label, training=False,
-        encoder=encoder, lb=lb
+def test_model_inference_metrics(model, data, encoder, lb, label):
+    x, y, _, _ = process_data(data, label=label, training=False, encoder=encoder, lb=lb
     )
     preds, labels = inference(model, x, lb)
 
