@@ -43,7 +43,7 @@ class inputs(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Welcome to the model inference API"}
+    return {"msg": "Welcome to the model inference API"}
 
 
 @app.post("/predict/")
