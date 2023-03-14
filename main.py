@@ -9,6 +9,7 @@ import os
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("pip install dvc")
     os.system("pip install 'dvc[s3]'")
+    os.system("dvc pull")
 
 app = FastAPI()
 
