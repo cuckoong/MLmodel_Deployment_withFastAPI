@@ -9,11 +9,6 @@ import os
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("pip install dvc")
     os.system("pip install 'dvc[s3]'")
-    os.system("dvc remote add -d s3-bucket s3://udacity-api-mlops-bucket")
-    if os.system("dvc pull") != 0:
-        exit("dvc pull failed")
-    os.system("rm -r .dvc .apt/usr/lib/dvc")
-
 
 app = FastAPI()
 
