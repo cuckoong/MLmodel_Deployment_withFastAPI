@@ -1,8 +1,7 @@
 import requests
 
-
 def test_get_main():
-    response = requests.get("http://localhost:8000/")
+    response = requests.get("http://localhost:5000/")
     assert response.status_code == 200
     assert response.json() == {"msg": "Welcome to the model inference API"}
 
@@ -19,7 +18,7 @@ def test_post_predict_1():
         "occupation": "Adm-clerical",
         "relationship": "Not-in-family",
     }
-    response = requests.post("http://localhost:8000/predict", json=data)
+    response = requests.post("http://localhost:5000/predict", json=data)
     assert response.status_code == 422
 
 
@@ -42,6 +41,6 @@ def test_post_predict_2():
         "hours-per-week": 40
     }
 
-    response = requests.post("http://localhost:8000/predict/", json=data)
+    response = requests.post("http://localhost:5000/predict/", json=data)
     assert response.status_code == 200
     assert response.json() == {"prediction": "<=50K"}
