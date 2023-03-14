@@ -1,0 +1,4 @@
+outs:
+- md5: 70a40764fc7ba660c74c7040a9b18ec9
+  size: 447
+  path: lb.joblib
