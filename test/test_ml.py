@@ -1,15 +1,14 @@
 import joblib
 import pytest
 import pandas as pd
-import os
 
-from starter.ml.model import train_model, compute_model_metrics, inference
-from starter.ml.data import process_data
+from src.ml.model import train_model, compute_model_metrics, inference
+from src.ml.data import process_data
 
 
 @pytest.fixture
 def data():
-    df = pd.read_csv("data/census.csv")
+    df = pd.read_csv("../data/census.csv")
     return df
 
 
@@ -20,19 +19,19 @@ def label():
 
 @pytest.fixture
 def model():
-    model = joblib.load("model/model.joblib")
+    model = joblib.load("../model/model.joblib")
     return model
 
 
 @pytest.fixture
 def lb():
-    lb = joblib.load("model/lb.joblib")
+    lb = joblib.load("../model/lb.joblib")
     return lb
 
 
 @pytest.fixture
 def encoder():
-    encoder = joblib.load("model/encoder.joblib")
+    encoder = joblib.load("../model/encoder.joblib")
     return encoder
 
 

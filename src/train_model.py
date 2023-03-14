@@ -10,10 +10,10 @@ from ml.data import process_data
 
 if __name__ == "__main__":
     # get root path of current project
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
     # set working directory to project root
     os.chdir(project_root)
-    data = pd.read_csv("starter/data/census.csv")
+    data = pd.read_csv("data/census.csv")
 
     # replace hyphens with underscores
     data.columns = [x.replace("-", "_") for x in data.columns]
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     # # save model
     import joblib
-    joblib.dump(model, "starter/model/model.joblib")
-    joblib.dump(encoder, "starter/model/encoder.joblib")
-    joblib.dump(lb, "starter/model/lb.joblib")
+    joblib.dump(model, "model/model.joblib")
+    joblib.dump(encoder, "model/encoder.joblib")
+    joblib.dump(lb, "model/lb.joblib")
 

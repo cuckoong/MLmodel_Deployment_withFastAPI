@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
-from starter.ml.data import process_data
-from starter.ml.model import inference
+from src.ml.data import process_data
+from src.ml.model import inference
 
 app = FastAPI()
 
