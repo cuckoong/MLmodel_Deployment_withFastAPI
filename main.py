@@ -4,12 +4,14 @@ import joblib
 import pandas as pd
 from src.ml.data import process_data
 from src.ml.model import inference
+
 import os
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
-    os.system("pip install dvc")
-    os.system("pip install 'dvc[s3]'")
-    os.system("dvc pull")
+    os.system("dvc config core.no_scm true")
+    if os.system("dvc pull") != 0:
+        exit("dvc pull failed")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 app = FastAPI()
 
