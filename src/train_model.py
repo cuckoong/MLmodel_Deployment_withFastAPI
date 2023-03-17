@@ -46,4 +46,3 @@ if __name__ == "__main__":
     joblib.dump(model, "model/model.joblib")
     joblib.dump(encoder, "model/encoder.joblib")
     joblib.dump(lb, "model/lb.joblib")
-
