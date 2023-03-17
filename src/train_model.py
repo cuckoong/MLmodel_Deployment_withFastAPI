@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Add the necessary imports for the starter code.
-from ml.model import train_model, compute_model_metrics, inference, slicing_metrics
+from ml.model import train_model, compute_model_metrics, inference, compute_slicing_metrics
 from ml.data import process_data
 
 if __name__ == "__main__":
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     print(f"Precision: {precision}, Recall: {recall}, F1: {fbeta}")
 
     # model performance of slicing data
-    slicing_performance = slicing_metrics(model, test, 'sex', encoder, lb)
+    slicing_performance = compute_slicing_metrics(model, test, 'sex', encoder, lb)
 
     # # save model
     import joblib

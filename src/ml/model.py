@@ -78,7 +78,7 @@ def inference(model, X, lb=None):
     return preds, labels
 
 
-def slicing_metrics(model, df, feature, encoder, lb):
+def compute_slicing_metrics(model, df, feature, encoder, lb):
     """
     Compute metrics for a specific feature.
     Parameters
@@ -115,5 +115,6 @@ def slicing_metrics(model, df, feature, encoder, lb):
         preds_slice = preds[X_feature == cat]
         precision, recall, fbeta = compute_model_metrics(y_slice, preds_slice)
         res[cat] = {"precision": precision, "recall": recall, "fbeta": fbeta}
+        print(f"Category: {cat}, precision: {precision}, recall: {recall}, fbeta: {fbeta}")
 
     return res
