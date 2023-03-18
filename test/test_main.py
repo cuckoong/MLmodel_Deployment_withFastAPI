@@ -24,7 +24,7 @@ def test_post_predict_1():
 
 
 def test_post_predict_2():
-    # valid data
+    # valid data <=50K
     data = {
         "age": 39,
         "workclass": "State-gov",
@@ -45,3 +45,27 @@ def test_post_predict_2():
     response = requests.post("http://localhost:8000/predict/", json=data)
     assert response.status_code == 200
     assert response.json() == {"prediction": "<=50K"}
+
+
+def test_post_predict_3():
+    # valid data >50K
+    data = {
+        "age": 39,
+        "workclass": "State-gov",
+        "fnlgt": 77516,
+        "education": "Bachelors",
+        "education_num": 13,
+        "marital-status": "Never-married",
+        "occupation": "Adm-clerical",
+        "relationship": "Not-in-family",
+        "race": "White",
+        "sex": "Male",
+        "native-country": "United-States",
+        "capital-gain": 30000,
+        "capital-loss": 0,
+        "hours-per-week": 40
+    }
+
+    response = requests.post("http://localhost:8000/predict/", json=data)
+    assert response.status_code == 200
+    assert response.json() == {"prediction": ">50K"}
