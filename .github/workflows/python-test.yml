@@ -47,3 +47,7 @@ jobs:
       run: |
         kill $(lsof -t -i:8000)  # Stop the server process
         sleep 3  # Wait for the server to stop completely
+        
+    - name: Continuous deploy to Heroku
+      run: |
+        git push heroku main
