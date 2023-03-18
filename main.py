@@ -33,20 +33,40 @@ categorical_features = [
 
 
 class inputs(BaseModel):
-    age: float = Field(..., example=39)
-    workclass: str = Field(..., example="State-gov")
-    fnlgt: float = Field(..., example=77516)
-    education: str = Field(..., example="Bachelors")
-    education_num: float = Field(..., example=13)
-    marital_status: str = Field(..., example="Never-married", alias="marital-status")
-    occupation: str = Field(..., example="Adm-clerical")
-    relationship: str = Field(..., example="Not-in-family")
-    race: str = Field(..., example="White")
-    sex: str = Field(..., example="Male")
-    native_country: str = Field(..., example="United-States", alias="native-country")
-    capital_gain: float = Field(..., example=2147, alias="capital-gain")
-    capital_loss: float = Field(..., example=0, alias="capital-loss")
-    hours_per_week: float = Field(..., example=40, alias="hours-per-week")
+    age: float
+    workclass: str
+    fnlgt: float
+    education: str
+    education_num: float
+    marital_status: str = Field(..., alias="marital-status")
+    occupation: str
+    relationship: str
+    race: str
+    sex: str
+    native_country: str = Field(..., alias="native-country")
+    capital_gain: float = Field(..., alias="capital-gain")
+    capital_loss: float = Field(...,  alias="capital-loss")
+    hours_per_week: float = Field(..., alias="hours-per-week")
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "age": 39,
+                "workclass": "State-gov",
+                "fnlgt": 77516,
+                "education": "Bachelors",
+                "education_num": 13,
+                "marital-status": "Never-married",
+                "occupation": "Adm-clerical",
+                "relationship": "Not-in-family",
+                'race': 'White',
+                'sex': 'Male',
+                'native-country': 'United-States',
+                'capital-gain': 2147,
+                'capital-loss': 0,
+                'hours-per-week': 40
+            }
+        }
 
 
 @app.get("/")

@@ -1,6 +1,7 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from src.ml.data import process_data
@@ -27,10 +28,23 @@ def train_model(X_train, y_train):
         ("scaler", StandardScaler()),
         ("model", RandomForestClassifier(n_estimators=100, random_state=42)),
     ]
-
     pipe = Pipeline(steps=steps)
-    pipe.fit(X_train, y_train)
-    return pipe
+
+    # grid search
+    param_grid = {
+        'model__n_estimators': [100, 200, 300],
+        'model__max_depth': [5, 10, 15],
+        'model__min_samples_split': [2, 5, 10],
+        'model__min_samples_leaf': [1, 2, 4],
+    }
+    grid = GridSearchCV(pipe, param_grid, cv=5, n_jobs=-1, verbose=1)
+    grid.fit(X_train, y_train)
+    print(grid.best_params_)
+
+    # fit the best model
+    best_model = grid.best_estimator_
+    best_model.fit(X_train, y_train)
+    return best_model
 
 
 def compute_model_metrics(y, preds):
@@ -45,14 +59,16 @@ def compute_model_metrics(y, preds):
         Predicted labels, binarized.
     Returns
     -------
+    accuracy : float
     precision : float
     recall : float
     fbeta : float
     """
+    accuracy = (y == preds).mean()
     fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
     precision = precision_score(y, preds, zero_division=1)
     recall = recall_score(y, preds, zero_division=1)
-    return precision, recall, fbeta
+    return accuracy, precision, recall, fbeta
 
 
 def inference(model, X, lb=None):
@@ -113,8 +129,11 @@ def compute_slicing_metrics(model, df, feature, encoder, lb):
     for cat in X_feature.unique():
         y_slice = y[X_feature == cat]
         preds_slice = preds[X_feature == cat]
-        precision, recall, fbeta = compute_model_metrics(y_slice, preds_slice)
-        res[cat] = {"precision": precision, "recall": recall, "fbeta": fbeta}
-        print(f"Category: {cat}, precision: {precision}, recall: {recall}, fbeta: {fbeta}")
+        acc, precision, recall, fbeta = compute_model_metrics(y_slice, preds_slice)
+        res[cat] = {"precision": precision, "recall": recall, "fbeta": fbeta, "accuracy": acc}
+        print(f"Category: {cat}, precision: {precision}, recall: {recall}, fbeta: {fbeta}, accuracy: {acc}")
 
+    # save to txt file for slicing metrics output
+    with open(f"slice_output.txt", "w") as f:
+        f.write(str(res))
     return res

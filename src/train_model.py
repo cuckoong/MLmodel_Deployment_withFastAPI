@@ -35,8 +35,8 @@ if __name__ == "__main__":
 
     # Compute and print the model's metrics.
     preds, labels = inference(model, X_test, lb)
-    precision, recall, fbeta = compute_model_metrics(y_test, preds)
-    print(f"Precision: {precision}, Recall: {recall}, F1: {fbeta}")
+    accuracy, precision, recall, fbeta = compute_model_metrics(y_test, preds)
+    print(f"Precision: {precision}, Recall: {recall}, F1: {fbeta}, Accuracy: {fbeta}")
 
     # model performance of slicing data
     slicing_performance = compute_slicing_metrics(model, test, 'sex', encoder, lb)

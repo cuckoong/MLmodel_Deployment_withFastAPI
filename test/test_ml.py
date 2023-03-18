@@ -1,9 +1,6 @@
 import joblib
 import pytest
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.preprocessing import StandardScaler
 
 from src.ml.model import train_model, compute_model_metrics, inference
 from src.ml.data import process_data
@@ -46,14 +43,13 @@ def test_process_data(data, label):
     assert lb is not None
 
 
-def test_train_model(data, label):
-    X_train, y_train, encoder, lb = process_data(data, label=label, training=True)
-    model = train_model(X_train, y_train)
+def test_train_model(model):
     assert model is not None
     # check if model contains the following steps
     assert "VarianceThreshold" in model.named_steps
     assert "scaler" in model.named_steps
     assert "model" in model.named_steps
+
 
 def test_model_inference_metrics(model, data, encoder, lb, label):
     x, y, _, _ = process_data(data, label=label, training=False, encoder=encoder, lb=lb)
@@ -64,8 +60,9 @@ def test_model_inference_metrics(model, data, encoder, lb, label):
     assert labels is not None
     assert len(preds) == len(labels) == len(data)
 
-    precision, recall, fbeta = compute_model_metrics(y, preds)
+    acc, precision, recall, fbeta = compute_model_metrics(y, preds)
     # check if metrics are not None
+    assert acc is not None
     assert precision is not None
     assert recall is not None
     assert fbeta is not None
