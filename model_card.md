@@ -17,8 +17,18 @@ relationship, race, sex, native-country, capital-gain, capital-loss, hours-per-w
 policies to help the people who have low income level to improve their income level. The model can also be used to help the people to know whether they can get a high income level or not.
 
 ## Training Data
+* source: census.csv provided by the course instructor
+* size: 32561 rows and 15 columns
+* Training size: 80% of the data
+* Training Target: income (>50K or <=50K)
+* Training Inputs: age, workclass, fnlgt, education, education-num,
+       marital-status, occupation, relationship, race, sex,
+       capital-gain, capital-loss, hours-per-week, native-country.
 
 ## Evaluation Data
+* source: census.csv provided by the course instructor
+* Testing size: 20% of the data
+* Testing Target: income (>50K or <=50K)
 
 ## Metrics
 * Accuracy: 0.672
