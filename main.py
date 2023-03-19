@@ -15,21 +15,23 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
 app = FastAPI()
 
-# load model
-model = joblib.load("model/model.joblib")
-encoder = joblib.load("model/encoder.joblib")
-lb = joblib.load("model/lb.joblib")
 
-categorical_features = [
-    "workclass",
-    "education",
-    "marital_status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native_country",
-]
+@app.on_event("startup")
+async def startup_event():
+    global model, encoder, lb, categorical_features
+    model = joblib.load("model/model.joblib")
+    encoder = joblib.load("model/encoder.joblib")
+    lb = joblib.load("model/lb.joblib")
+    categorical_features = [
+        "workclass",
+        "education",
+        "marital_status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native_country",
+    ]
 
 
 class inputs(BaseModel):
@@ -45,7 +47,7 @@ class inputs(BaseModel):
     sex: str
     native_country: str = Field(..., alias="native-country")
     capital_gain: float = Field(..., alias="capital-gain")
-    capital_loss: float = Field(...,  alias="capital-loss")
+    capital_loss: float = Field(..., alias="capital-loss")
     hours_per_week: float = Field(..., alias="hours-per-week")
 
     class Config:
